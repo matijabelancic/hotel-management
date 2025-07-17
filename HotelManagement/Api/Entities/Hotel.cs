@@ -4,7 +4,7 @@ namespace Api.Entities;
 
 public class Hotel
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; init; } = Guid.NewGuid();
     public required string Name { get; set; }
     public required double Price { get; set; }
     
