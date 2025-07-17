@@ -8,6 +8,6 @@ public class HotelRequest
     public required double Price { get; set; }
     [Range(0.000001, 90, ErrorMessage = "Latitude cannot be 0.")]
     public required double Latitude { get; set; }
-    [Range(0.000001, 90, ErrorMessage = "Latitude cannot be 0.")]
+    [Range(0.000001, 90, ErrorMessage = "Longitude cannot be 0.")]
     public required double Longitude { get; set; }
 }
