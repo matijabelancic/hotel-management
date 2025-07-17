@@ -1,4 +1,4 @@
-# Hotel management 
+# Hotel management
 
 ## Overview
 
@@ -9,15 +9,15 @@ of price and proximity to a given location.
 
 ## Features
 
-- Manage hotels with full CRUD operations:
-    - Create new hotel entries
-    - Read individual or all hotels
-    - Update existing hotel information
-    - Delete hotels by ID
+- Manage hotels with full CRUD operations via HTTP API:
+  - Create new hotel entries
+  - Read individual or all hotels
+  - Update existing hotel information
+  - Delete hotels by ID
 
 - Search hotels with ranking based on:
-    - Price weight
-    - Distance weight from current location
+  - Price weight
+  - Distance weight from current location
 
 - Pagination support on hotel search results
 
@@ -39,7 +39,6 @@ The application uses a configuration section `HotelSearchWeights` to define sear
   }
 }
  ```
-
 The sum of weights should not be zero, as the search functionality calculates scores based on these values.
 
 ## Getting Started
@@ -58,18 +57,17 @@ The sum of weights should not be zero, as the search functionality calculates sc
 
 ## API Endpoints
 
-- `GET /hotel`  
+- `GET /hotels`  
   Retrieves all hotels
 
-- `GET /hotel/{id}`  
+- `GET /hotels/{id}`  
   Retrieve a hotel by its unique ID
 
-- `POST /hotel`  
+- `POST /hotels`  
   Create a new hotel  
   Body example:
   ```json
   {
-    "id": "guid",
     "name": "Hotel Name",
     "price": 100,
     "latitude": 45.0,
@@ -77,28 +75,37 @@ The sum of weights should not be zero, as the search functionality calculates sc
   }
   ```
 
-- `PUT /hotel`  
-  Update an existing hotel  
-  Body same as create
+- `PUT /hotels/{id}`  
+  Update an existing hotel by ID  
+  Body example (same as create):
+  ```json
+  {
+    "name": "Updated Hotel Name",
+    "price": 120,
+    "latitude": 45.0,
+    "longitude": 15.0
+  }
+  ```
 
-- `DELETE /hotel/{id}`  
+- `DELETE /hotels/{id}`  
   Delete a hotel by ID
 
-- `GET /hotel/search`  
+- `GET /hotels/search`  
   Search hotels with pagination and ranking  
   Query parameters:
-    - `CurrentLatitude` (double): Current location latitude
-    - `CurrentLongitude` (double): Current location longitude
-    - `PageNumber` (int): Page number for pagination
-    - `PageSize` (int): Number of results per page
+  - `CurrentLatitude` (double): Current location latitude (required, non-zero)
+  - `CurrentLongitude` (double): Current location longitude (required, non-zero)
+  - `PageNumber` (int): Page number for pagination (optional, default 1)
+  - `PageSize` (int): Number of results per page (optional, default 10)
 
 ## Error Handling
 
-- Throws `HotelNotFoundException` when hotel with specified ID is not found
-- Throws `PriceAndDistanceWeightZeroException` if both search weights are zero
+- Returns 404 Not Found if the hotel with specified ID is not found
+- Throws `PriceAndDistanceWeightZeroException` if both search weights are zero, resulting in a 422 response
 
 ## Testing
 
-The repository contains unit tests covering the repository methods for CRUD functionality and error handling.
+The repository contains unit tests covering the service layer and repository methods for CRUD operations,
+search functionality including sorting and pagination, and error handling scenarios.
 
 ---

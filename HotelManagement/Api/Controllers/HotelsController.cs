@@ -7,21 +7,21 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class HotelController(IHotelRepository repository, IHotelService hotelService) : ControllerBase
+public class HotelsController(IHotelService hotelService) : ControllerBase
 {
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Hotel))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult GetById(Guid id)
     {
-        var hotel = repository.GetById(id);
+        var hotel = hotelService.Get(id);
         return Ok(hotel);
     }
     
     [HttpGet]
     public IActionResult GetAll()
     {
-        var hotels = repository.GetAll();
+        var hotels = hotelService.GetAll();
         return Ok(hotels);
     }
     
@@ -46,19 +46,19 @@ public class HotelController(IHotelRepository repository, IHotelService hotelSer
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Create([FromBody] Hotel hotel)
+    public IActionResult Create([FromBody] HotelRequest request)
     {
-        repository.Create(hotel);
+        var hotel = hotelService.Create(request);
         return Created($"/hotels/{hotel.Id}", hotel);
     }
     
-    [HttpPut]
+    [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Update([FromBody] Hotel hotel)
+    public IActionResult Update(Guid id, [FromBody] HotelRequest request)
     {
-        repository.Update(hotel);
+        hotelService.Update(id, request);
         return NoContent();
     }
     
@@ -67,7 +67,7 @@ public class HotelController(IHotelRepository repository, IHotelService hotelSer
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public IActionResult Delete(Guid id)
     {
-        repository.Delete(id);
+        hotelService.Delete(id);
         return NoContent();
     }
 }

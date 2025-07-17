@@ -52,7 +52,7 @@ public class HotelServiceTests
             PageNumber = 1,
             PageSize = 10
         };
-        
+
         Assert.Throws<PriceAndDistanceWeightZeroException>(() => service.Search(request));
     }
 
@@ -69,9 +69,9 @@ public class HotelServiceTests
             PageNumber = 1,
             PageSize = 10
         };
-        
+
         var result = _hotelService.Search(request);
-        
+
         Assert.Equal(2, result.Count);
         Assert.Equal("Cheap Close", result[0].Name);
         Assert.Equal("Expensive Far", result[1].Name);
@@ -98,9 +98,9 @@ public class HotelServiceTests
             PageNumber = 2,
             PageSize = 5
         };
-        
+
         var result = _hotelService.Search(request);
-        
+
         Assert.Equal(5, result.Count);
         Assert.Equal("Hotel 6", result[0].Name);
     }

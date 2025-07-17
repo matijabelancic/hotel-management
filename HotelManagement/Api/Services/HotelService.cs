@@ -1,4 +1,5 @@
 using Api.Dtos;
+using Api.Entities;
 using Api.Interfaces;
 using Api.Mappings;
 using Api.Utilities;
@@ -9,6 +10,20 @@ namespace Api.Services;
 
 public class HotelService(IHotelRepository hotelRepository, IOptions<HotelSearchWeights> weightsConfig) : IHotelService
 {
+    public IEnumerable<Hotel> GetAll() => hotelRepository.GetAll();
+    public Hotel Get(Guid id) => hotelRepository.GetById(id);
+    public Hotel Create(HotelRequest request)
+    {
+        var entity = request.ToEntity();
+        hotelRepository.Create(entity);
+        return entity;
+    }
+    public void Update(Guid id, HotelRequest request)
+    {
+        var entity = request.ToEntity(id);
+        hotelRepository.Update(entity);
+    }
+    public void Delete(Guid id) => hotelRepository.Delete(id);
     public PagedList<HotelDto> Search(SearchRequest request)
     {
         if (weightsConfig.Value.PriceWeight + weightsConfig.Value.DistanceWeight == 0)
